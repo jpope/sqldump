@@ -24,40 +24,43 @@ namespace SQLDump
 
 			var optionSet = new OptionSet
 			{
-			    {"i|use-integrated-security", "use Integrated Security to connect to server (default)", x => {}},
-			    {"s|use-sql-server-authentication", "use SQL Server authentication to connect to server", x => options.UseSqlServerAuthenication = x != null},
-			    {"u|username=", "username for SQL Server authentication", x => options.Username = x},
-			    {"p|password=", "password for SQL Server authentication", x => options.Password = x},
-			    {"l|limit=", "limit number of records per table", x => options.Limit = int.Parse(x)},
-			    {"t|use-transaction", "wrap all insert statements in a transaction", x => options.UseTransaction = x != null},
-			    {"d|identity-insert", "include statement to enable identity insert and include identity column in output", x => options.IncludeIdentityInsert = x != null},
-			    {"e|exclude", "supplied tables are excluded, rather than included", x => options.ListIsExclusive = x != null},
+			    {"c|config-path", "read from a JSON configuration file at the given path (default is .\\)",
+			        x => { options.ConfigPath = x; }},
+                //Support for these has been broken
+//			    { "i|use-integrated-security", "use Integrated Security to connect to server (default)", x => {}},
+//			    {"s|use-sql-server-authentication", "use SQL Server authentication to connect to server", x => options.UseSqlServerAuthenication = x != null},
+//			    {"u|username=", "username for SQL Server authentication", x => options.Username = x},
+//			    {"p|password=", "password for SQL Server authentication", x => options.Password = x},
+//			    {"l|limit=", "limit number of records per table", x => options.Limit = int.Parse(x)},
+//			    {"t|use-transaction", "wrap all insert statements in a transaction", x => options.UseTransaction = x != null},
+//			    {"d|identity-insert", "include statement to enable identity insert and include identity column in output", x => options.IncludeIdentityInsert = x != null},
+//			    {"e|exclude", "supplied tables are excluded, rather than included", x => options.ListIsExclusive = x != null},
 			    {"?|help", "display this help and exit", x => options.ShowHelp = x != null},
 			    {"version", "output version information then exit", x => options.ShowVersion = x != null},
 			};
 
 			IList<string> arguments;
 
-//			try
-//			{
-//				arguments = optionSet.Parse(args);
-//			}
-//			catch (Exception ex)
-//			{
-//				PrintError(ex.ToString());
-//				return 1;
-//			}
+			try
+			{
+				arguments = optionSet.Parse(args);
+			}
+			catch (Exception ex)
+			{
+				PrintError(ex.ToString());
+				return 1;
+			}
 //
-//			if (options.ShowHelp)
-//			{
-//				PrintHelp(optionSet);
-//				return 0;
-//			}
-//			else if (options.ShowVersion)
-//			{
-//				PrintVersion();
-//				return 0;
-//			}
+			if (options.ShowHelp)
+			{
+				PrintHelp(optionSet);
+				return 0;
+			}
+			else if (options.ShowVersion)
+			{
+				PrintVersion();
+				return 0;
+			}
 //			else if (arguments.Count < 2)
 //			{
 //				PrintError("Not enough arguments supplied");
@@ -512,6 +515,7 @@ order by
 			public bool ShowHelp { get; set; }
 			public bool ShowVersion { get; set; }
 			public List<string> TableNames { get; set; } 
+			public string ConfigPath { get; set; } 
 		}
 
 		private class TableInfo
