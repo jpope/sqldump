@@ -1,0 +1,32 @@
+[
+  {
+    "connectionString": "Server=.\\SQLEXPRESS;Database=ERA_Certificate_Info;Trusted_Connection=True",
+    "outputDirectory": "C:\\Users\\Headspring\\Desktop\\out\\ERA_Certificate_Info",
+    "fileNamePrefix": "0117_",
+    "tableRequests": [
+      {
+        "name": "dbo.Certificate",
+        "includeIdentityInsert": true
+      },
+      {
+        "name": "dbo.Rider",
+        "includeIdentityInsert": true
+      }
+    ]
+  },
+  {
+    "connectionString": "Server=.\\SQLEXPRESS;Database=ERA_Certificate_Info;Trusted_Connection=True",
+    "outputDirectory": "C:\\Users\\Headspring\\Desktop\\out\\ERA_Certificate_Info_2",
+    "fileNamePrefix": "0117_",
+    "tableRequests": [
+      {
+        "name": "dbo.Certificate",
+        "includeIdentityInsert": true
+      },
+      {
+        "name": "dbo.Phone",
+        "includeIdentityInsert": true
+      }
+    ]
+  }
+]
