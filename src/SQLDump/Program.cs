@@ -345,49 +345,6 @@ order by
         //			}
         //		}
 
-        private static void DumpRow(TableInfo table, IDataRecord reader, bool includeIdentityInsert)
-		{
-			Console.Write("insert into [" + table.Name + "] (");
-
-			var first = true;
-			for (var i = 0; i < reader.FieldCount; ++i)
-			{
-				var columnName = reader.GetName(i);
-
-				if (includeIdentityInsert || columnName != table.IdentityColumn)
-				{
-					if (first)
-						first = false;
-					else
-						Console.Write(", ");
-
-					Console.Write("[" + columnName + "]");
-				}
-			}
-
-			Console.Write(") values (");
-
-			first = true;
-			for (var i = 0; i < reader.FieldCount; ++i)
-			{
-				var columnName = reader.GetName(i);
-
-				if (includeIdentityInsert || columnName != table.IdentityColumn)
-				{
-					if (first)
-						first = false;
-					else
-						Console.Write(", ");
-
-					var literal = ConvertToSqlLiteral(reader.GetFieldType(i), reader.GetValue(i));
-
-					Console.Write(literal);
-				}
-			}
-
-			Console.WriteLine(")");
-		}
-
 		private static string ConvertToSqlLiteral(Type type, object value)
 		{
 			if (value == DBNull.Value)
