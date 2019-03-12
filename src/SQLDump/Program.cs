@@ -103,7 +103,9 @@ namespace SQLDump
 
 		private static void PerformDump(Options options)
 		{
-		    var connectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";// ConfigurationManager.ConnectionStrings["Origin"].ToString(); // GetConnectionString(options.Server, options.Database, options.UseSqlServerAuthenication, options.Username, options.Password);
+		    var connectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";
+		    // ConfigurationManager.ConnectionStrings["Origin"].ToString();
+		    // // GetConnectionString(options.Server, options.Database, options.UseSqlServerAuthenication, options.Username, options.Password);
 
 			using (var connection = new SqlConnection(connectionString))
 			{
