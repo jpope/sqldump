@@ -268,47 +268,6 @@ order by
                 return SqlGenerator.GetInsertStatement(table, reader, includeIdentityInsert);
             }
 
-        //        private static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit)
-        //		{
-        //			if (!Directory.Exists(OutputDirectory))
-        //				Directory.CreateDirectory(OutputDirectory);
-        //
-        //			if (!Directory.Exists(OutputDirectory))
-        //				Directory.CreateDirectory(OutputDirectory);
-        //
-        //			new StringWriter(new StringBuilder())
-        //			var fileInfo = new FileInfo(Path.Combine(OutputDirectory, table + ".xml"));
-        //			var fileStream = fileInfo.OpenWrite();
-        //			fileStream
-        //			if (includeIdentityInsert)
-        //			{
-        //				Console.WriteLine("set identity_insert [" + table.Name + "] on");
-        //				Console.WriteLine();
-        //			}
-        //
-        //			using (var command = connection.CreateCommand())
-        //			{
-        //				if (limit != null)
-        //					command.CommandText = "select top " + limit + " * from [" + table.Name + "]";
-        //				else
-        //					command.CommandText = "select * from [" + table.Name + "]";
-        //
-        //				using (var reader = command.ExecuteReader())
-        //				{
-        //					while (reader.Read())
-        //					{
-        //						DumpRow(table, reader, includeIdentityInsert);
-        //					}
-        //				}
-        //			}
-        //
-        //			if (includeIdentityInsert)
-        //			{
-        //				Console.WriteLine();
-        //				Console.WriteLine("set identity_insert [" + table + "] off");
-        //			}
-        //		}
-
 		private static void PrintError(string message)
 		{
 			var originalColor = Console.ForegroundColor;
