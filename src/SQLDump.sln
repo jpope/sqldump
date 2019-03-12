@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLDump", "SQLDump.csproj", "{393AA608-5237-4366-8AE2-A5967E996941}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLDump", "SQLDump\SQLDump.csproj", "{393AA608-5237-4366-8AE2-A5967E996941}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8C95541B-CCF0-4BE0-9A25-3FCBA215DD95}
 	EndGlobalSection
 EndGlobal
