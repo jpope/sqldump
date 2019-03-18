@@ -2,13 +2,15 @@
 
 . .\build-helpers
 
-$versionPrefix = "1.0.1"
+$versionPrefix = "0.0.1"
 $prerelease = $false
 
 $authors = "Justin Pope"
 $copyright = copyright 2013 $authors
 $configuration = 'Release'
-$versionSuffix = if ($prerelease) { "beta-{0:D4}" -f $buildNumber } else { "" }
+# $versionSuffix = if ($prerelease) { "beta-{0:D4}" -f $buildNumber } else { "" }
+$tools = '.\tools'
+$src = '.\src'
 
 function License {
     mit-license $copyright
@@ -51,7 +53,11 @@ function Test {
 }
 
 function Package {
-    exec { dotnet pack -c $configuration --no-restore --no-build /nologo } src\SQLDump
+	exec { & $tools\NuGet.exe pack $src\SQLDump\SQLDump.csproj -Symbols -Prop Configuration=$configuration -OutputDirectory .\package }
+
+   write-host
+   write-host "To publish these packages, issue the following command:"
+   write-host "   tools\NuGet push .\package\SQLDump.$version.nupkg"
 }
 
 run-build {
