@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="SqlGeneration\ConnectionStringBuilder.cs" />
     <Compile Include="SqlGeneration\SqlGenerator.cs" />
     <Compile Include="TableInfo.cs" />
   </ItemGroup>
