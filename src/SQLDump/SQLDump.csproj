@@ -58,6 +58,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlGeneration\ConnectionStringBuilder.cs" />
     <Compile Include="SqlGeneration\SqlGenerator.cs" />
+    <Compile Include="SqlGeneration\TableDumpScriptGenerator.cs" />
+    <Compile Include="SqlGeneration\TableNameGenerator.cs" />
     <Compile Include="TableInfo.cs" />
   </ItemGroup>
   <ItemGroup>
