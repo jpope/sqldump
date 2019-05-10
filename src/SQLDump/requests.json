@@ -1,8 +1,8 @@
 [
   {
-    "connectionString": "Server=.\\SQLEXPRESS;Database=ERA_Certificate_Info;Trusted_Connection=True",
-    "outputDirectory": "C:\\Users\\Headspring\\Desktop\\out\\ERA_Certificate_Info",
-    "fileNamePrefix": "0117_",
+    "connectionString": "Server=.\\SQLEXPRESS;Database=CertificateAdministration_Life;Trusted_Connection=True",
+    "outputDirectory": "C:\\dev\\SqlDumpSampleOutput",
+    "fileNamePrefix": "0001_",
     "tableRequests": [
       {
         "name": "dbo.Certificate",
@@ -15,17 +15,13 @@
     ]
   },
   {
-    "connectionString": "Server=.\\SQLEXPRESS;Database=ERA_Certificate_Info;Trusted_Connection=True",
-    "outputDirectory": "C:\\Users\\Headspring\\Desktop\\out\\ERA_Certificate_Info_2",
-    "fileNamePrefix": "0117_",
+    "connectionString": "Server=.\\SQLEXPRESS;Database=ERA_Administration;Trusted_Connection=True",
+    "outputDirectory": "C:\\dev\\SqlDumpSampleOutput\\ERA_Administration",
+    "fileNamePrefix": "0002_",
     "tableRequests": [
       {
-        "name": "dbo.Certificate",
-        "includeIdentityInsert": true
-      },
-      {
-        "name": "dbo.Phone",
-        "includeIdentityInsert": true
+        "name": "dbo.Product",
+        "includeIdentityInsert": false
       }
     ]
   }
