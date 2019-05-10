@@ -7,7 +7,7 @@
     <owners>$authors$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://github.com/jpope/sqldump/blob/master/LICENSE.txt</licenseUrl>
-    <projectUrl>https://fixie.github.io</projectUrl>
+    <projectUrl>https://github.com/jpope/sqldump</projectUrl>
     <iconUrl>https://raw.github.com/jpope/sqldump/master/img/sqldump_256.png</iconUrl>
     <description>I need to make a description</description>
     <copyright>$copyright$</copyright>
