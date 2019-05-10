@@ -173,57 +173,10 @@ namespace SQLDump
             writer.Close();
         }
 
-        private static string GetInsertStatement(TableRequest table, IDataRecord reader, bool includeIdentityInsert)
+        private static string GetInsertStatement(TableInfo table, IDataRecord reader, bool includeIdentityInsert)
         {
-            var builder = new StringBuilder("");
-            builder.Append("insert into " + table.Name + " (");
-            var flag = true;
-            for (var i = 0; i < reader.FieldCount; i++)
-            {
-                var name = reader.GetName(i);
-                if (includeIdentityInsert || (name != table.IdentityColumn))
-                {
-                    if (flag)
-                    {
-                        flag = false;
-                    }
-                    else
-                    {
-                        builder.Append(", ");
-                    }
-
-                    builder.Append("[" + name + "]");
-                }
-            }
-
-            builder.Append(") values (");
-            flag = true;
-            for (var j = 0; j < reader.FieldCount; j++)
-            {
-                var str2 = reader.GetName(j);
-                if (includeIdentityInsert || (str2 != table.IdentityColumn))
-                {
-                    if (flag)
-                    {
-                        flag = false;
-                    }
-                    else
-                    {
-                        builder.Append(", ");
-                    }
-                    string str3 = ConvertToSqlLiteral(reader.GetFieldType(j), reader.GetValue(j));
-                    builder.Append(str3);
-                }
-            }
-
-            builder.Append(")");
-            return builder.ToString();
-        }
-
-        private static string ConvertToSqlLiteral(Type type, object value)
-        {
-            return SqlGenerator.ConvertToSqlLiteral(type, value);
-        }
+            return SqlGenerator.GetInsertStatement(table, reader, includeIdentityInsert);
+        }       
 
         private static void PrintError(string message)
         {
