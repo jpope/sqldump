@@ -9,9 +9,9 @@ namespace SQLDump.SqlGeneration
     {
         public static string GetInsertStatement(TableInfo table, IDataRecord reader, bool includeIdentityInsert)
         {
-            StringBuilder builder = new StringBuilder("");
+            var builder = new StringBuilder("");
             builder.Append("insert into [" + table.Name + "] (");
-            bool flag = true;
+            var flag = true;
             for (int i = 0; i < reader.FieldCount; i++)
             {
                 string name = reader.GetName(i);
