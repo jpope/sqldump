@@ -15,12 +15,8 @@ namespace SQLDump
 {
 	internal static class Program
 	{
-		public static string OutputDirectory;
-
 	    private static int Main(string[] args)
 		{
-			OutputDirectory = ConfigurationManager.AppSettings["OutputDirectory"];
-
 			var options = new Options();
 
 			var optionSet = new OptionSet
@@ -67,18 +63,9 @@ namespace SQLDump
 //				PrintError("Not enough arguments supplied");
 //				return 1;
 //			}
-//			else if (options.UseSqlServerAuthenication && (options.Username == null || options.Password == null))
-//			{
-//				PrintError("Must supply username and password for SQL Server Authentication");
-//				return 1;
-//			}
 
 		    options.ConnectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";
-//			options.Database = arguments[1];
-//			options.TableNames = arguments.Skip(2).ToList();
-//			options.Server = arguments[0];
-//			options.Database = arguments[1];
-//			options.TableNames = arguments.Skip(2).ToList();
+		    options.OutputDirectory = ConfigurationManager.AppSettings["OutputDirectory"];
             options.IncludeIdentityInsert = true;
 
             var myTableNames = new List<string>
@@ -108,7 +95,7 @@ namespace SQLDump
 			{
 				connection.Open();
 
-				var tablesToDump = GetTablesToDump(connection, options.TableNames ?? new List<string>(), options.ListIsExclusive);
+				var tablesToDump = TableNameGenerator.GetTablesToDump(connection, options.TableNames ?? new List<string>(), options.ListIsExclusive);
 
 			    var iFile = 1;
 				var first = true;
@@ -119,15 +106,10 @@ namespace SQLDump
 					else
 						Console.WriteLine();
 
-				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.Database, OutputDirectory, iFile);
+				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.Database, options.OutputDirectory, iFile);
 				    iFile++;
                 }
 			}
-		}
-
-		public static IEnumerable<TableInfo> GetTablesToDump(IDbConnection connection, ICollection<string> tableNames, bool listIsExclusive)
-		{
-		    return TableNameGenerator.GetTablesToDump(connection, tableNames, listIsExclusive);
 		}
 
 	    private static void PrintError(string message)
