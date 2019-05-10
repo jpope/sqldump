@@ -1,47 +1,47 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using SQLDump.Configuration;
 
 namespace SQLDump.SqlGeneration
 {
     public static class TableDumpScriptGenerator
     {
-        public static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string databaseName, string outputDirectory, int iFile)
+        public static void DumpTable(IDbConnection connection, TableRequest table, DumpRequest dumpRequest, int iFile)
         {
-            EnsureDirectoryExists(outputDirectory + "/" + databaseName);
-            var fileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.") + iFile.ToString("D2");
-            var fileNameSuffix = ".ENV.DEV";
+            EnsureDirectoryExists(dumpRequest.OutputDirectory);
 
-            StreamWriter writer = new FileInfo(outputDirectory + "/" + databaseName + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql").CreateText();
+            var fileNamePrefix = dumpRequest.FileNamePrefix + iFile.ToString("D2");
+            var writer = new FileInfo($"{dumpRequest.OutputDirectory}/{fileNamePrefix}_{table.Name.Replace(".", "-")}_{dumpRequest.FileNameSuffix}.sql").CreateText();
             writer.AutoFlush = true;
-            if (includeIdentityInsert && (table.IdentityColumn != null))
+            if (table.IncludeIdentityInsert && (table.IdentityColumn != null))
             {
-                writer.WriteLine("set identity_insert [" + table.Name + "] on");
+                writer.WriteLine("set identity_insert " + table.Name + " on");
                 writer.WriteLine();
             }
-            using (IDbCommand command = connection.CreateCommand())
+
+            using (var command = connection.CreateCommand())
             {
-                if (limit.HasValue)
-                {
-                    command.CommandText = string.Concat(new object[] { "select top ", limit, " * from [", table.Name, "]" });
-                }
-                else
-                {
-                    command.CommandText = "select * from [" + table.Name + "]";
-                }
-                using (IDataReader reader = command.ExecuteReader())
+                var top = table.Limit.HasValue && table.Limit.Value > 0
+                    ? $"top {table.Limit.Value}"
+                    : null;
+
+                command.CommandText = $"select {top} * from {table.Name}";
+                using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        writer.WriteLine(SqlGenerator.GetInsertStatement(table, reader, includeIdentityInsert));
+                        writer.WriteLine(SqlGenerator.GetInsertStatement(table, reader, table.IncludeIdentityInsert));
                     }
                 }
             }
-            if (includeIdentityInsert && (table.IdentityColumn != null))
+
+            if (table.IncludeIdentityInsert && (table.IdentityColumn != null))
             {
                 writer.WriteLine();
-                writer.WriteLine("set identity_insert [" + table.Name + "] off");
+                writer.WriteLine("set identity_insert " + table.Name + " off");
             }
+
             writer.Close();
         }
         private static void EnsureDirectoryExists(string path)

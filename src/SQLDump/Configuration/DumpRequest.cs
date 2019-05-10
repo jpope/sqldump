@@ -2,7 +2,7 @@
 
 namespace SQLDump.Configuration
 {
-    internal class DumpRequest
+    public class DumpRequest
     {
         public string ConnectionString { get; set; }
 
