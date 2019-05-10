@@ -12,14 +12,14 @@ namespace SQLDump.SqlGeneration
             var fileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.") + iFile.ToString("D2");
             var fileNameSuffix = ".ENV.DEV";
 
-            StreamWriter writer = new FileInfo(outputDirectory + "/" + databaseName + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql").CreateText();
+            var writer = new FileInfo(outputDirectory + "/" + databaseName + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql").CreateText();
             writer.AutoFlush = true;
             if (includeIdentityInsert && (table.IdentityColumn != null))
             {
                 writer.WriteLine("set identity_insert [" + table.Name + "] on");
                 writer.WriteLine();
             }
-            using (IDbCommand command = connection.CreateCommand())
+            using (var command = connection.CreateCommand())
             {
                 if (limit.HasValue)
                 {
@@ -29,7 +29,7 @@ namespace SQLDump.SqlGeneration
                 {
                     command.CommandText = "select * from [" + table.Name + "]";
                 }
-                using (IDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
