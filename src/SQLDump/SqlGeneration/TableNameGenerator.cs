@@ -7,7 +7,7 @@ namespace SQLDump.SqlGeneration
 {
     public static class TableNameGenerator
     {
-        private static IEnumerable<TableRequest> GetTablesToDump(IDbConnection connection, DumpRequest dumpRequest)
+        public static IEnumerable<TableRequest> GetTablesToDump(IDbConnection connection, DumpRequest dumpRequest)
         {
             const string sqlFormat = @"select
 	                t.table_name,
