@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
+using SQLDump.SqlGeneration;
 
 namespace SQLDump
 {
@@ -221,38 +222,7 @@ namespace SQLDump
 
         private static string ConvertToSqlLiteral(Type type, object value)
         {
-            if (value == DBNull.Value)
-            {
-                return "null";
-            }
-            else if (type == typeof(string))
-            {
-                return "'" + ((string)value).Replace("'", "''") + "'";
-            }
-            else if (type == typeof(DateTime))
-            {
-                return "'" + ((DateTime)value).ToString("yyyy-MM-dd hh:mm:ss.fff") + "'";
-            }
-            else if (type == typeof(DateTimeOffset))
-            {
-                return "'" + ((DateTimeOffset)value).ToString("yyyy-MM-dd hh:mm:ss.fff") + "'";
-            }
-            else if (type == typeof(byte[]))
-            {
-                return GetHexString((byte[])value);
-            }
-            else if (type == typeof(Guid))
-            {
-                return "'" + ((Guid)value).ToString("D") + "'";
-            }
-            else if (type == typeof(bool))
-            {
-                return ((bool)value) ? "1" : "0";
-            }
-            else
-            {
-                return value.ToString();
-            }
+            return SqlGenerator.ConvertToSqlLiteral(type, value);
         }
 
         private static string GetHexString(IEnumerable<byte> value)
