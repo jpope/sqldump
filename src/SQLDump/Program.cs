@@ -129,7 +129,7 @@ namespace SQLDump
 					else
 						Console.WriteLine();
 
-				    DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.Database, OutputDirectory, iFile);
+				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.Database, OutputDirectory, iFile);
 				    iFile++;
                 }
 
@@ -145,12 +145,8 @@ namespace SQLDump
 		{
 		    return TableNameGenerator.GetTablesToDump(connection, tableNames, listIsExclusive);
 		}
-            private static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string databaseName, string outputDirectory, int iFile)
-            {
-                TableDumpScriptGenerator.DumpTable(connection, table, includeIdentityInsert, limit, databaseName, outputDirectory, iFile);
-            }
 
-		private static void PrintError(string message)
+	    private static void PrintError(string message)
 		{
 			var originalColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
