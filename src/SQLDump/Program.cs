@@ -225,20 +225,6 @@ namespace SQLDump
             return SqlGenerator.ConvertToSqlLiteral(type, value);
         }
 
-        private static string GetHexString(IEnumerable<byte> value)
-        {
-            var sb = new StringBuilder("'0x");
-
-            foreach (var @byte in value)
-            {
-                sb.AppendFormat("{0:x2}", @byte);
-            }
-
-            sb.Append("'");
-
-            return sb.ToString();
-        }
-
         private static void PrintError(string message)
         {
             var originalColor = Console.ForegroundColor;
