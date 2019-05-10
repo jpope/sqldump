@@ -61,42 +61,42 @@ namespace SQLDump
             }
         }
 
-        private static void DumpTable(IDbConnection connection, TableRequest tableRequest, DumpRequest dumpRequest, int fileNumber)
+        private static void DumpTable(IDbConnection connection, TableRequest table, DumpRequest dumpRequest, int iFile)
         {
             if (!Directory.Exists(dumpRequest.OutputDirectory))
             {
                 Directory.CreateDirectory(dumpRequest.OutputDirectory);
             }
 
-            var fileNamePrefix = dumpRequest.FileNamePrefix + fileNumber.ToString("D2");
-            var writer = new FileInfo($"{dumpRequest.OutputDirectory}/{fileNamePrefix}_{tableRequest.Name.Replace(".", "-")}_{dumpRequest.FileNameSuffix}.sql").CreateText();
+            var fileNamePrefix = dumpRequest.FileNamePrefix + iFile.ToString("D2");
+            var writer = new FileInfo($"{dumpRequest.OutputDirectory}/{fileNamePrefix}_{table.Name.Replace(".", "-")}_{dumpRequest.FileNameSuffix}.sql").CreateText();
             writer.AutoFlush = true;
-            if (tableRequest.IncludeIdentityInsert && (tableRequest.IdentityColumn != null))
+            if (table.IncludeIdentityInsert && (table.IdentityColumn != null))
             {
-                writer.WriteLine("set identity_insert " + tableRequest.Name + " on");
+                writer.WriteLine("set identity_insert " + table.Name + " on");
                 writer.WriteLine();
             }
 
             using (var command = connection.CreateCommand())
             {
-                var top = tableRequest.Limit.HasValue && tableRequest.Limit.Value > 0
-                    ? $"top {tableRequest.Limit.Value}"
+                var top = table.Limit.HasValue && table.Limit.Value > 0
+                    ? $"top {table.Limit.Value}"
                     : null;
 
-                command.CommandText = $"select {top} * from {tableRequest.Name}";
+                command.CommandText = $"select {top} * from {table.Name}";
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        writer.WriteLine(GetInsertStatement(tableRequest, reader, tableRequest.IncludeIdentityInsert));
+                        writer.WriteLine(GetInsertStatement(table, reader, table.IncludeIdentityInsert));
                     }
                 }
             }
 
-            if (tableRequest.IncludeIdentityInsert && (tableRequest.IdentityColumn != null))
+            if (table.IncludeIdentityInsert && (table.IdentityColumn != null))
             {
                 writer.WriteLine();
-                writer.WriteLine("set identity_insert " + tableRequest.Name + " off");
+                writer.WriteLine("set identity_insert " + table.Name + " off");
             }
 
             writer.Close();
