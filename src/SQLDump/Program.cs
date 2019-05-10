@@ -88,7 +88,7 @@ namespace SQLDump
                 {
                     while (reader.Read())
                     {
-                        writer.WriteLine(GetInsertStatement(table, reader, table.IncludeIdentityInsert));
+                        writer.WriteLine(SqlGenerator.GetInsertStatement(table, reader, table.IncludeIdentityInsert));
                     }
                 }
             }
@@ -101,11 +101,6 @@ namespace SQLDump
 
             writer.Close();
         }
-
-        private static string GetInsertStatement(TableInfo table, IDataRecord reader, bool includeIdentityInsert)
-        {
-            return SqlGenerator.GetInsertStatement(table, reader, includeIdentityInsert);
-        }       
 
         private static void PrintError(string message)
         {
