@@ -173,15 +173,15 @@ namespace SQLDump
             writer.Close();
         }
 
-        private static string GetInsertStatement(TableRequest tableRequest, IDataRecord reader, bool includeIdentityInsert)
+        private static string GetInsertStatement(TableRequest table, IDataRecord reader, bool includeIdentityInsert)
         {
             var builder = new StringBuilder("");
-            builder.Append("insert into " + tableRequest.Name + " (");
+            builder.Append("insert into " + table.Name + " (");
             var flag = true;
             for (var i = 0; i < reader.FieldCount; i++)
             {
                 var name = reader.GetName(i);
-                if (includeIdentityInsert || (name != tableRequest.IdentityColumn))
+                if (includeIdentityInsert || (name != table.IdentityColumn))
                 {
                     if (flag)
                     {
@@ -201,7 +201,7 @@ namespace SQLDump
             for (var j = 0; j < reader.FieldCount; j++)
             {
                 var str2 = reader.GetName(j);
-                if (includeIdentityInsert || (str2 != tableRequest.IdentityColumn))
+                if (includeIdentityInsert || (str2 != table.IdentityColumn))
                 {
                     if (flag)
                     {
