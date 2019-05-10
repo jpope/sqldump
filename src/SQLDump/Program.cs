@@ -16,8 +16,8 @@ namespace SQLDump
 	internal static class Program
 	{
 		public static string OutputDirectory;
-	    public static int iFile = 1;
-		private static int Main(string[] args)
+
+	    private static int Main(string[] args)
 		{
 			OutputDirectory = ConfigurationManager.AppSettings["OutputDirectory"];
 
@@ -120,6 +120,7 @@ namespace SQLDump
 					Console.WriteLine();
 				}
 
+			    var iFile = 1;
 				var first = true;
 				foreach (var table in tablesToDump)
 				{
@@ -128,10 +129,11 @@ namespace SQLDump
 					else
 						Console.WriteLine();
 
-					DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.Database, OutputDirectory);
-				}
+				    DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.Database, OutputDirectory, iFile);
+				    iFile++;
+                }
 
-				if (options.UseTransaction)
+                if (options.UseTransaction)
 				{
 					Console.WriteLine();
 					Console.WriteLine("commit transaction");
@@ -143,49 +145,9 @@ namespace SQLDump
 		{
 		    return TableNameGenerator.GetTablesToDump(connection, tableNames, listIsExclusive);
 		}
-            private static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string databaseName, string outputDirectory)
+            private static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string databaseName, string outputDirectory, int iFile)
             {
-                EnsureDirectoryExists(outputDirectory + "/" + databaseName);
-                var fileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.") + iFile.ToString("D2");
-                iFile++;
-                var fileNameSuffix = ".ENV.DEV";
-
-                StreamWriter writer = new FileInfo(outputDirectory + "/" + databaseName + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql").CreateText();
-                writer.AutoFlush = true;
-                if (includeIdentityInsert && (table.IdentityColumn != null))
-                {
-                    writer.WriteLine("set identity_insert [" + table.Name + "] on");
-                    writer.WriteLine();
-                }
-                using (IDbCommand command = connection.CreateCommand())
-                {
-                    if (limit.HasValue)
-                    {
-                        command.CommandText = string.Concat(new object[] { "select top ", limit, " * from [", table.Name, "]" });
-                    }
-                    else
-                    {
-                        command.CommandText = "select * from [" + table.Name + "]";
-                    }
-                    using (IDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            writer.WriteLine(GetInsertStatement(table, reader, includeIdentityInsert));
-                        }
-                    }
-                }
-                if (includeIdentityInsert && (table.IdentityColumn != null))
-                {
-                    writer.WriteLine();
-                    writer.WriteLine("set identity_insert [" + table.Name + "] off");
-                }
-                writer.Close();
-            }
-
-            private static string GetInsertStatement(TableInfo table, IDataRecord reader, bool includeIdentityInsert)
-            {
-                return SqlGenerator.GetInsertStatement(table, reader, includeIdentityInsert);
+                TableDumpScriptGenerator.DumpTable(connection, table, includeIdentityInsert, limit, databaseName, outputDirectory, iFile);
             }
 
 		private static void PrintError(string message)
@@ -242,13 +204,5 @@ namespace SQLDump
           888888888888888888888888888P         
           Y8888888888888888888888888P          ", versionWithPadding);
 		}
-        private static void EnsureDirectoryExists(string path)
-        {
-            DirectoryInfo info = new DirectoryInfo(path);
-            if (!info.Exists)
-            {
-                info.Create();
-            }
-        }
 	}
 }
