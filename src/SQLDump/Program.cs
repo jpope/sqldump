@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using SQLDump.SqlGeneration;
 
@@ -69,6 +70,37 @@ namespace SQLDump
             Console.Error.WriteLine("ERROR: " + message);
 
             Console.ForegroundColor = originalColor;
+        }
+
+        private static void PrintVersion()
+        {
+            var version = Assembly.GetEntryAssembly().GetName().Version.ToString();
+
+            if (version.Length % 2 == 1)
+                version = string.Format(" SQLDump  {0} ", version);
+            else
+                version = string.Format(" SQLDump {0} ", version);
+
+            var padding = new string(Enumerable.Repeat('8', (26 - version.Length) / 2).ToArray());
+
+            var versionWithPadding = padding + version + padding;
+
+            Console.WriteLine();
+            Console.WriteLine(
+                @"                        (                      
+                         )                     
+                    (   (                      
+                     )   b                     
+                    (    88_                   
+                      ___888b__                
+                    _d888888888b   (           
+           (    ___d888888888888_   )          
+            )  d88888888888888888b (           
+           (  d8888888888888888888__           
+           ___8888888888888888888888b          
+          d{0}b         
+          888888888888888888888888888P         
+          Y8888888888888888888888888P          ", versionWithPadding);
         }
     }
 }
