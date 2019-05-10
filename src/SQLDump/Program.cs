@@ -73,13 +73,13 @@ namespace SQLDump
 //				return 1;
 //			}
 
-			options.Server = ConfigurationManager.ConnectionStrings["Origin"].ToString();
+		    options.ConnectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";
 //			options.Database = arguments[1];
 //			options.TableNames = arguments.Skip(2).ToList();
 //			options.Server = arguments[0];
 //			options.Database = arguments[1];
 //			options.TableNames = arguments.Skip(2).ToList();
-			options.IncludeIdentityInsert = true;
+            options.IncludeIdentityInsert = true;
 
             var myTableNames = new List<string>
 		    {
@@ -104,21 +104,11 @@ namespace SQLDump
 
 		private static void PerformDump(Options options)
 		{
-		    var connectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";
-		    // ConfigurationManager.ConnectionStrings["Origin"].ToString();
-		    // // GetConnectionString(options.Server, options.Database, options.UseSqlServerAuthenication, options.Username, options.Password);
-
-			using (var connection = new SqlConnection(connectionString))
+			using (var connection = new SqlConnection(options.ConnectionString))
 			{
 				connection.Open();
 
 				var tablesToDump = GetTablesToDump(connection, options.TableNames ?? new List<string>(), options.ListIsExclusive);
-
-				if (options.UseTransaction)
-				{
-					Console.WriteLine("begin transaction");
-					Console.WriteLine();
-				}
 
 			    var iFile = 1;
 				var first = true;
@@ -132,12 +122,6 @@ namespace SQLDump
 				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.Database, OutputDirectory, iFile);
 				    iFile++;
                 }
-
-                if (options.UseTransaction)
-				{
-					Console.WriteLine();
-					Console.WriteLine("commit transaction");
-				}
 			}
 		}
 
