@@ -13,5 +13,7 @@ namespace SQLDump.Configuration
         public bool ShowVersion { get; set; }
         public List<string> TableNames { get; set; }
         public string ConfigPath { get; set; }
+        public string FileNamePrefix { get; set; }
+        public string FileNameSuffix { get; set; }
     }
 }

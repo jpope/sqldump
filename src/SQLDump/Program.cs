@@ -54,6 +54,8 @@ namespace SQLDump
 		    options.ConnectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";
 		    options.OutputDirectory = "C:\\Dev\\myproject\\sqldump_output";
             options.IncludeIdentityInsert = true;
+	        options.FileNameSuffix = ".ENV.DEV";
+	        options.FileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.");
 
             var myTableNames = new List<string>
 		    {
@@ -79,10 +81,8 @@ namespace SQLDump
 		private static void PerformDump(Options options)
 		{
 		    EnsureDirectoryExists(options.OutputDirectory);
-		    var fileNameSuffix = ".ENV.DEV";
-		    var fileNameGeneralPrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.");
 
-            using (var connection = new SqlConnection(options.ConnectionString))
+		    using (var connection = new SqlConnection(options.ConnectionString))
 			{
 				connection.Open();
 
@@ -97,9 +97,9 @@ namespace SQLDump
 					else
 						Console.WriteLine();
 
-				    var fileNamePrefix = fileNameGeneralPrefix + iFile.ToString("D3");
+				    var fileNamePrefix = options.FileNamePrefix + iFile.ToString("D3");
 
-				    var filePath = options.OutputDirectory + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql";
+				    var filePath = options.OutputDirectory + "/" + fileNamePrefix + table.Name + options.FileNameSuffix + ".sql";
                     Console.WriteLine($"Creating file: {filePath}");
 
 				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, filePath);
