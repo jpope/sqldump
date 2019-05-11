@@ -21,14 +21,15 @@ namespace SQLDump.SqlGeneration
             }
             using (var command = connection.CreateCommand())
             {
+                var limitClause = "";
+
                 if (limit.HasValue)
                 {
-                    command.CommandText = string.Concat(new object[] { "select top ", limit, " * from ", schemaAndTable });
+                    limitClause = $"LIMIT {limit} ";
                 }
-                else
-                {
-                    command.CommandText = "select * from " + schemaAndTable;
-                }
+
+                command.CommandText = $"SELECT {limitClause}* FROM {schemaAndTable} ";
+                
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
