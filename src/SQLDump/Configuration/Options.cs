@@ -1,17 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace SQLDump
+namespace SQLDump.Configuration
 {
     public class Options
     {
-        public string Server { get; set; }
-        public string Database { get; set; }
-        public bool UseSqlServerAuthenication { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string ConnectionString { get; set; }
         public int? Limit { get; set; }
-        //            public string OutputDirectory { get; set; }
-        public bool UseTransaction { get; set; }
+        public string OutputDirectory { get; set; }
         public bool IncludeIdentityInsert { get; set; }
         public bool ListIsExclusive { get; set; }
         public bool ShowHelp { get; set; }

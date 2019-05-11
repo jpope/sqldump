@@ -1,0 +1,34 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$authors$</authors>
+    <owners>$authors$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/jpope/sqldump/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/jpope/sqldump</projectUrl>
+    <iconUrl>https://raw.github.com/jpope/sqldump/master/img/sqldump_256.png</iconUrl>
+    <description>I need to make a description</description>
+    <copyright>$copyright$</copyright>
+    <repository url="https://github.com/jpope/sqldump" />
+    <references>
+      <reference file="SQLDump.exe" />
+    </references>
+  </metadata>
+  <!-- <files> -->
+    <!-- Reference Library -->
+
+    <!-- <file target="lib" src="..\SQLDump\bin\Release\SQLDump.exe" /> -->
+
+    <!-- TestDriven.NET Adapter -->
+
+
+    <!-- Run Time Support -->
+
+    <!-- <file target="build\" src="..\..\build\**" /> -->
+    <!-- -->
+    <!-- <file target="buildMultiTargeting\" src="..\..\buildMultiTargeting\**" /> -->
+
+  <!-- </files> -->
+</package>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using SQLDump.Configuration;
 
 namespace SQLDump.SqlGeneration
 {
