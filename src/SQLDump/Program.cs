@@ -14,7 +14,7 @@ namespace SQLDump
 {
     internal static class Program
     {
-        private const string DefaultRequestsFile = "requests.json";
+        private const string DefaultRequestsFile = "sqldump.config.json";
 
         private static int Main(string[] args)
         {

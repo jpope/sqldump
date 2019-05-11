@@ -63,7 +63,7 @@
     <Compile Include="TableInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="requests.json">
+    <None Include="sqldump.config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="packages.config" />
