@@ -13,7 +13,9 @@ namespace SQLDump.SqlGeneration
             var fileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.") + iFile.ToString("D2");
             var fileNameSuffix = ".ENV.DEV";
 
-            var writer = new FileInfo(outputDirectory + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql").CreateText();
+            var filePath = outputDirectory + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql";
+
+            var writer = new FileInfo(filePath).CreateText();
             writer.AutoFlush = true;
 
             var schemaAndTable = table.SchemaAndTableName;
