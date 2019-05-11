@@ -7,13 +7,13 @@ namespace SQLDump.SqlGeneration
 {
     public static class TableDumpScriptGenerator
     {
-        public static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string databaseName, string outputDirectory, int iFile)
+        public static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string outputDirectory, int iFile)
         {
-            EnsureDirectoryExists(outputDirectory + "/" + databaseName);
+            EnsureDirectoryExists(outputDirectory);
             var fileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.") + iFile.ToString("D2");
             var fileNameSuffix = ".ENV.DEV";
 
-            var writer = new FileInfo(outputDirectory + "/" + databaseName + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql").CreateText();
+            var writer = new FileInfo(outputDirectory + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql").CreateText();
             writer.AutoFlush = true;
             if (includeIdentityInsert && (table.IdentityColumn != null))
             {

@@ -107,7 +107,7 @@ namespace SQLDump
 					else
 						Console.WriteLine();
 
-				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.Database, options.OutputDirectory, iFile);
+				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.OutputDirectory, iFile);
 				    iFile++;
                 }
 			}

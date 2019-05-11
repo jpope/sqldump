@@ -5,7 +5,6 @@ namespace SQLDump.Configuration
     public class Options
     {
         public string ConnectionString { get; set; }
-        public string Database { get; set; }
         public int? Limit { get; set; }
         public string OutputDirectory { get; set; }
         public bool IncludeIdentityInsert { get; set; }
