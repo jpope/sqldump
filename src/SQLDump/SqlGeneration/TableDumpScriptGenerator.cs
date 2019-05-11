@@ -7,14 +7,17 @@ namespace SQLDump.SqlGeneration
 {
     public static class TableDumpScriptGenerator
     {
-        public static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string filePath)
+        public static void DumpTable(IDbConnection connection, DumpConfig dumpConfig, TableInfo table, string filePath)
         {
+            var identityInsert = dumpConfig.IncludeIdentityInsert;
+            var limit = dumpConfig.Limit;
+
             var writer = new FileInfo(filePath).CreateText();
             writer.AutoFlush = true;
 
             var schemaAndTable = table.SchemaAndTableName;
 
-            if (includeIdentityInsert && (table.IdentityColumn != null))
+            if (identityInsert && (table.IdentityColumn != null))
             {
                 writer.WriteLine($"set identity_insert {schemaAndTable} on");
                 writer.WriteLine();
@@ -34,11 +37,11 @@ namespace SQLDump.SqlGeneration
                 {
                     while (reader.Read())
                     {
-                        writer.WriteLine(SqlGenerator.GetInsertStatement(table, reader, includeIdentityInsert));
+                        writer.WriteLine(SqlGenerator.GetInsertStatement(table, reader, identityInsert));
                     }
                 }
             }
-            if (includeIdentityInsert && (table.IdentityColumn != null))
+            if (identityInsert && (table.IdentityColumn != null))
             {
                 writer.WriteLine();
                 writer.WriteLine($"set identity_insert {schemaAndTable} off");

@@ -100,7 +100,7 @@ namespace SQLDump
 				    var filePath = dumpConfig.OutputDirectory + "/" + fileNamePrefix + table.Name + dumpConfig.FileNameSuffix + ".sql";
                     Console.WriteLine($"Creating file: {filePath}");
 
-				    TableDumpScriptGenerator.DumpTable(connection, table, dumpConfig.IncludeIdentityInsert, dumpConfig.Limit, filePath);
+				    TableDumpScriptGenerator.DumpTable(connection, dumpConfig, table, filePath);
 				    iFile++;
                 }
 			}
