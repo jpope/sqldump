@@ -62,7 +62,7 @@
     <Compile Include="SqlGeneration\TableNameGenerator.cs" />
     <Compile Include="Configuration\TableInfo.cs" />
   </ItemGroup>
-   <ItemGroup>
+  <ItemGroup>
     <None Include="SQLDump.nuspec">
       <SubType>Designer</SubType>
     </None>
@@ -72,7 +72,6 @@
     <None Include="sqldump.config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
