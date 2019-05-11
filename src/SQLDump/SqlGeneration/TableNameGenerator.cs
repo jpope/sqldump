@@ -30,6 +30,11 @@ order by
 
             string sql;
 
+            if (tableNames == null)
+            {
+                tableNames = new List<string>();
+            }
+
             if (tableNames.Count == 0)
             {
                 sql = string.Format(sqlFormat, string.Empty);
