@@ -2,7 +2,7 @@
 
 namespace SQLDump.Configuration
 {
-    public class Options
+    public class DumpConfig
     {
         public string ConnectionString { get; set; }
         public string OutputDirectory { get; set; }

@@ -14,7 +14,7 @@ namespace SQLDump
 	{
 	    private static int Main(string[] args)
 	    {
-	        var options = new Options();
+	        var dumpConfig = new DumpConfig();
 
             //PrintVersion();
 
@@ -51,23 +51,21 @@ namespace SQLDump
 //				return 1;
 //			}
 
-		    options.ConnectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";
-		    options.OutputDirectory = "C:\\Dev\\myproject\\sqldump_output";
-            options.IncludeIdentityInsert = true;
-	        options.FileNameSuffix = ".ENV.DEV";
-	        options.FileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.");
+		    dumpConfig.OutputDirectory = "C:\\Dev\\myproject\\sqldump_output";
+            dumpConfig.IncludeIdentityInsert = true;
+	        dumpConfig.FileNameSuffix = ".ENV.DEV";
+	        dumpConfig.FileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.");
 
-            var myTableNames = new List<string>
+	        dumpConfig.ConnectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";
+	        dumpConfig.TableNames = new List<string>
 		    {
 		        "Table1",
 		        "Table2",
-            };
-
-		    options.TableNames = myTableNames;
+		    };
 
             try
 			{
-				PerformDump(options);
+				PerformDump(dumpConfig);
 			}
 			catch (Exception ex)
 			{
@@ -78,15 +76,15 @@ namespace SQLDump
 			return 0;
 		}
 
-		private static void PerformDump(Options options)
+		private static void PerformDump(DumpConfig dumpConfig)
 		{
-		    EnsureDirectoryExists(options.OutputDirectory);
+		    EnsureDirectoryExists(dumpConfig.OutputDirectory);
 
-		    using (var connection = new SqlConnection(options.ConnectionString))
+		    using (var connection = new SqlConnection(dumpConfig.ConnectionString))
 			{
 				connection.Open();
 
-				var tablesToDump = TableNameGenerator.GetTablesToDump(connection, options.TableNames, options.TableListIsExclusive);
+				var tablesToDump = TableNameGenerator.GetTablesToDump(connection, dumpConfig.TableNames, dumpConfig.TableListIsExclusive);
 
 			    var iFile = 1;
 				var first = true;
@@ -97,12 +95,12 @@ namespace SQLDump
 					else
 						Console.WriteLine();
 
-				    var fileNamePrefix = options.FileNamePrefix + iFile.ToString("D3");
+				    var fileNamePrefix = dumpConfig.FileNamePrefix + iFile.ToString("D3");
 
-				    var filePath = options.OutputDirectory + "/" + fileNamePrefix + table.Name + options.FileNameSuffix + ".sql";
+				    var filePath = dumpConfig.OutputDirectory + "/" + fileNamePrefix + table.Name + dumpConfig.FileNameSuffix + ".sql";
                     Console.WriteLine($"Creating file: {filePath}");
 
-				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, filePath);
+				    TableDumpScriptGenerator.DumpTable(connection, table, dumpConfig.IncludeIdentityInsert, dumpConfig.Limit, filePath);
 				    iFile++;
                 }
 			}
