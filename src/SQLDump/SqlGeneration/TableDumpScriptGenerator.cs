@@ -7,10 +7,8 @@ namespace SQLDump.SqlGeneration
 {
     public static class TableDumpScriptGenerator
     {
-        public static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string outputDirectory, int iFile, string nameSuffix, string namePrefix)
+        public static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string filePath)
         {
-            var filePath = outputDirectory + "/" + namePrefix + table.Name + nameSuffix + ".sql";
-
             var writer = new FileInfo(filePath).CreateText();
             writer.AutoFlush = true;
 

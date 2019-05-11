@@ -97,9 +97,12 @@ namespace SQLDump
 					else
 						Console.WriteLine();
 
-				    var fileNamePrefix = fileNameGeneralPrefix + iFile.ToString("D2");
+				    var fileNamePrefix = fileNameGeneralPrefix + iFile.ToString("D3");
 
-				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.OutputDirectory, iFile, fileNameSuffix, fileNamePrefix);
+				    var filePath = options.OutputDirectory + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql";
+                    Console.WriteLine($"Creating file: {filePath}");
+
+				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, filePath);
 				    iFile++;
                 }
 			}
