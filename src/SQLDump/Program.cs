@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using NDesk.Options;
 using SQLDump.Configuration;
 using SQLDump.SqlGeneration;
@@ -17,13 +12,15 @@ namespace SQLDump
 	internal static class Program
 	{
 	    private static int Main(string[] args)
-		{
-			var options = new Options();
+	    {
+	        var options = new Options();
 
-			var optionSet = new OptionSet
-			{
-			    {"c|config-path", "read from a JSON configuration file at the given path (default is .\\)",
-			        x => { options.ConfigPath = x; }},
+            //PrintVersion();
+
+//            var optionSet = new OptionSet
+//			{
+//			    {"c|config-path", "read from a JSON configuration file at the given path (default is .\\)",
+//			        x => { options.ConfigPath = x; }},
                 //Support for these has been broken
 //			    { "i|use-integrated-security", "use Integrated Security to connect to server (default)", x => {}},
 //			    {"s|use-sql-server-authentication", "use SQL Server authentication to connect to server", x => options.UseSqlServerAuthenication = x != null},
@@ -33,32 +30,20 @@ namespace SQLDump
 //			    {"t|use-transaction", "wrap all insert statements in a transaction", x => options.UseTransaction = x != null},
 //			    {"d|identity-insert", "include statement to enable identity insert and include identity column in output", x => options.IncludeIdentityInsert = x != null},
 //			    {"e|exclude", "supplied tables are excluded, rather than included", x => options.ListIsExclusive = x != null},
-			    {"?|help", "display this help and exit", x => options.ShowHelp = x != null},
-			    {"version", "output version information then exit", x => options.ShowVersion = x != null},
-			};
+//			};
 
-			IList<string> arguments;
-
-			try
-			{
-				arguments = optionSet.Parse(args);
-			}
-			catch (Exception ex)
-			{
-				PrintError(ex.ToString());
-				return 1;
-			}
+//			IList<string> arguments;
 //
-			if (options.ShowHelp)
-			{
-				PrintHelp(optionSet);
-				return 0;
-			}
-			else if (options.ShowVersion)
-			{
-				PrintVersion();
-				return 0;
-			}
+//			try
+//			{
+//				arguments = optionSet.Parse(args);
+//			}
+//			catch (Exception ex)
+//			{
+//				PrintError(ex.ToString());
+//				return 1;
+//			}
+//
 //			else if (arguments.Count < 2)
 //			{
 //				PrintError("Not enough arguments supplied");
@@ -66,7 +51,7 @@ namespace SQLDump
 //			}
 
 		    options.ConnectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";
-		    options.OutputDirectory = ConfigurationManager.AppSettings["OutputDirectory"];
+		    options.OutputDirectory = "C:\\Dev\\myproject\\sqldump_output";
             options.IncludeIdentityInsert = true;
 
             var myTableNames = new List<string>
@@ -121,20 +106,6 @@ namespace SQLDump
 			Console.Error.WriteLine("ERROR: " + message);
 
 			Console.ForegroundColor = originalColor;
-		}
-
-		private static void PrintHelp(OptionSet optionSet)
-		{
-			PrintVersion();
-
-			var assemblyName = Path.GetFileNameWithoutExtension(Process.GetCurrentProcess().MainModule.FileName);
-
-			Console.WriteLine();
-			Console.WriteLine("Usage: " + assemblyName + " [OPTIONS] SERVER DATABASE [TABLES]");
-			Console.WriteLine();
-			Console.WriteLine("Options:");
-
-			optionSet.WriteOptionDescriptions(Console.Out);
 		}
 
 		private static void PrintVersion()

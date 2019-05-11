@@ -12,20 +12,19 @@ namespace SQLDump.SqlGeneration
             const string sqlFormat =
                 @"select
 	t.table_name,
-	(select top 1
+	t.table_schema,
+    (select top 1
 		c.column_name
 	from
 		information_schema.columns c
 	where
-		c.table_schema = 'dbo'
-		and c.table_name = t.table_name
+		c.table_name = t.table_name
 		and columnproperty(object_id(c.table_name), c.column_name, 'IsIdentity') = 1
 	) as identity_column
 from
 	information_schema.tables t
 where
-	t.table_schema = 'dbo'
-	and t.table_type = 'BASE TABLE'{0}
+	t.table_type = 'BASE TABLE'{0}
 order by
 	t.table_name";
 
@@ -55,9 +54,15 @@ order by
                     while (reader.Read())
                     {
                         var tableName = reader.GetString(0);
-                        var identityColumn = reader.IsDBNull(1) ? null : reader.GetString(1);
+                        var tableSchema = reader.GetString(1);
+                        var identityColumn = reader.IsDBNull(2) ? null : reader.GetString(2);
 
-                        tableList.Add(new TableInfo { Name = tableName, IdentityColumn = identityColumn });
+                        tableList.Add(new TableInfo
+                        {
+                            Name = tableName,
+                            Schema = tableSchema,
+                            IdentityColumn = identityColumn
+                        });
                     }
                 }
             }

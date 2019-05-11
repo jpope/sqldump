@@ -10,13 +10,13 @@ namespace SQLDump.SqlGeneration
     {
         public static string GetInsertStatement(TableInfo table, IDataRecord reader, bool includeIdentityInsert)
         {
-            StringBuilder builder = new StringBuilder("");
-            builder.Append("insert into [" + table.Name + "] (");
-            bool flag = true;
-            for (int i = 0; i < reader.FieldCount; i++)
+            var builder = new StringBuilder("");
+            builder.Append("insert into " + table.SchemaAndTableName + " (");
+            var flag = true;
+            for (var i = 0; i < reader.FieldCount; i++)
             {
-                string name = reader.GetName(i);
-                if (includeIdentityInsert || (name != table.IdentityColumn))
+                var fieldName = reader.GetName(i);
+                if (includeIdentityInsert || (fieldName != table.IdentityColumn))
                 {
                     if (flag)
                     {
@@ -26,15 +26,15 @@ namespace SQLDump.SqlGeneration
                     {
                         builder.Append(", ");
                     }
-                    builder.Append("[" + name + "]");
+                    builder.Append("[" + fieldName + "]");
                 }
             }
             builder.Append(") values (");
             flag = true;
-            for (int j = 0; j < reader.FieldCount; j++)
+            for (var i = 0; i < reader.FieldCount; i++)
             {
-                string str2 = reader.GetName(j);
-                if (includeIdentityInsert || (str2 != table.IdentityColumn))
+                var fieldName = reader.GetName(i);
+                if (includeIdentityInsert || (fieldName != table.IdentityColumn))
                 {
                     if (flag)
                     {
@@ -44,8 +44,8 @@ namespace SQLDump.SqlGeneration
                     {
                         builder.Append(", ");
                     }
-                    string str3 = ConvertToSqlLiteral(reader.GetFieldType(j), reader.GetValue(j));
-                    builder.Append(str3);
+                    var sqlLiteral = ConvertToSqlLiteral(reader.GetFieldType(i), reader.GetValue(i));
+                    builder.Append(sqlLiteral);
                 }
             }
             builder.Append(")");

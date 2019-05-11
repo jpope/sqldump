@@ -61,7 +61,6 @@
     <Compile Include="Configuration\TableInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="SQLDump.nuspec">
       <SubType>Designer</SubType>
     </None>

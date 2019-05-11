@@ -15,20 +15,23 @@ namespace SQLDump.SqlGeneration
 
             var writer = new FileInfo(outputDirectory + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql").CreateText();
             writer.AutoFlush = true;
+
+            var schemaAndTable = table.SchemaAndTableName;
+
             if (includeIdentityInsert && (table.IdentityColumn != null))
             {
-                writer.WriteLine("set identity_insert [" + table.Name + "] on");
+                writer.WriteLine($"set identity_insert {schemaAndTable} on");
                 writer.WriteLine();
             }
             using (var command = connection.CreateCommand())
             {
                 if (limit.HasValue)
                 {
-                    command.CommandText = string.Concat(new object[] { "select top ", limit, " * from [", table.Name, "]" });
+                    command.CommandText = string.Concat(new object[] { "select top ", limit, " * from ", schemaAndTable });
                 }
                 else
                 {
-                    command.CommandText = "select * from [" + table.Name + "]";
+                    command.CommandText = "select * from " + schemaAndTable;
                 }
                 using (var reader = command.ExecuteReader())
                 {
@@ -41,7 +44,7 @@ namespace SQLDump.SqlGeneration
             if (includeIdentityInsert && (table.IdentityColumn != null))
             {
                 writer.WriteLine();
-                writer.WriteLine("set identity_insert [" + table.Name + "] off");
+                writer.WriteLine($"set identity_insert {schemaAndTable} off");
             }
             writer.Close();
         }
