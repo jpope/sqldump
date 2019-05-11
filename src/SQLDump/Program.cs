@@ -86,7 +86,7 @@ namespace SQLDump
 			{
 				connection.Open();
 
-				var tablesToDump = TableNameGenerator.GetTablesToDump(connection, options.TableNames ?? new List<string>(), options.ListIsExclusive);
+				var tablesToDump = TableNameGenerator.GetTablesToDump(connection, options.TableNames, options.TableListIsExclusive);
 
 			    var iFile = 1;
 				var first = true;
