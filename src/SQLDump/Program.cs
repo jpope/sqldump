@@ -33,7 +33,7 @@ namespace SQLDump
 
                 foreach (var request in requests)
                 {
-                    Console.WriteLine($"Processing request. ConnectionString: '{request.ConnectionString}'; Tables requets: {request.TableRequests.Count}");
+                    Console.WriteLine($"Processing request. ConnectionString: '{request.ConnectionString}'; Tables requests: {request.TableRequests.Count}");
                     PerformDump(request);
                 }
             }
