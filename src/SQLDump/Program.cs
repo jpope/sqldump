@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using NDesk.Options;
@@ -77,7 +78,11 @@ namespace SQLDump
 
 		private static void PerformDump(Options options)
 		{
-			using (var connection = new SqlConnection(options.ConnectionString))
+		    EnsureDirectoryExists(options.OutputDirectory);
+		    var fileNameSuffix = ".ENV.DEV";
+		    var fileNameGeneralPrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.");
+
+            using (var connection = new SqlConnection(options.ConnectionString))
 			{
 				connection.Open();
 
@@ -92,7 +97,9 @@ namespace SQLDump
 					else
 						Console.WriteLine();
 
-				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.OutputDirectory, iFile);
+				    var fileNamePrefix = fileNameGeneralPrefix + iFile.ToString("D2");
+
+				    TableDumpScriptGenerator.DumpTable(connection, table, options.IncludeIdentityInsert, options.Limit, options.OutputDirectory, iFile, fileNameSuffix, fileNamePrefix);
 				    iFile++;
                 }
 			}
@@ -138,5 +145,14 @@ namespace SQLDump
           888888888888888888888888888P         
           Y8888888888888888888888888P          ", versionWithPadding);
 		}
-	}
+
+	    private static void EnsureDirectoryExists(string path)
+	    {
+	        var info = new DirectoryInfo(path);
+	        if (!info.Exists)
+	        {
+	            info.Create();
+	        }
+	    }
+    }
 }

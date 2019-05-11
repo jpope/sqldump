@@ -7,13 +7,9 @@ namespace SQLDump.SqlGeneration
 {
     public static class TableDumpScriptGenerator
     {
-        public static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string outputDirectory, int iFile)
+        public static void DumpTable(IDbConnection connection, TableInfo table, bool includeIdentityInsert, int? limit, string outputDirectory, int iFile, string nameSuffix, string namePrefix)
         {
-            EnsureDirectoryExists(outputDirectory);
-            var fileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.") + iFile.ToString("D2");
-            var fileNameSuffix = ".ENV.DEV";
-
-            var filePath = outputDirectory + "/" + fileNamePrefix + table.Name + fileNameSuffix + ".sql";
+            var filePath = outputDirectory + "/" + namePrefix + table.Name + nameSuffix + ".sql";
 
             var writer = new FileInfo(filePath).CreateText();
             writer.AutoFlush = true;
@@ -49,14 +45,6 @@ namespace SQLDump.SqlGeneration
                 writer.WriteLine($"set identity_insert {schemaAndTable} off");
             }
             writer.Close();
-        }
-        private static void EnsureDirectoryExists(string path)
-        {
-            var info = new DirectoryInfo(path);
-            if (!info.Exists)
-            {
-                info.Create();
-            }
         }
     }
 }
