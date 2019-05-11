@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SQLDump
+namespace SQLDump.Configuration
 {
     public class Options
     {

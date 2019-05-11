@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using SQLDump.Configuration;
 
 namespace SQLDump.SqlGeneration
 {

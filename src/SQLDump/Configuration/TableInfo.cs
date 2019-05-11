@@ -1,4 +1,4 @@
-﻿namespace SQLDump
+﻿namespace SQLDump.Configuration
 {
     public class TableInfo
     {

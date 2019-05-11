@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NDesk.Options;
+using SQLDump.Configuration;
 using SQLDump.SqlGeneration;
 
 namespace SQLDump
