@@ -11,22 +11,22 @@ namespace SQLDump.SqlGeneration
         {
             const string sqlFormat =
                 @"select
-	t.table_name,
-	t.table_schema,
+	t.TABLE_NAME,
+	t.TABLE_SCHEMA,
     (select top 1
-		c.column_name
+		c.COLUMN_NAME
 	from
 		information_schema.columns c
 	where
-		c.table_name = t.table_name
-		and columnproperty(object_id(c.table_name), c.column_name, 'IsIdentity') = 1
+		c.TABLE_NAME = t.TABLE_NAME
+		and columnproperty(object_id(c.TABLE_SCHEMA + '.' + c.TABLE_NAME), c.COLUMN_NAME, 'IsIdentity') = 1
 	) as identity_column
 from
 	information_schema.tables t
 where
-	t.table_type = 'BASE TABLE'{0}
+	t.TABLE_TYPE = 'BASE TABLE'{0}
 order by
-	t.table_name";
+	t.TABLE_NAME";
 
             string sql;
 
