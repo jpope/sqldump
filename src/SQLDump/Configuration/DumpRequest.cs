@@ -14,6 +14,6 @@ namespace SQLDump.Configuration
 
         public string FileNameSuffix { get; set; }
 
-        public List<TableRequest> TableRequests { get; set; }
+        public List<TableInfo> TableRequests { get; set; }
     }
 }

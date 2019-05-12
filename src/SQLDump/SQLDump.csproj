@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\DumpRequest.cs" />
-    <Compile Include="Configuration\TableRequest.cs" />
     <Compile Include="Configuration\Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

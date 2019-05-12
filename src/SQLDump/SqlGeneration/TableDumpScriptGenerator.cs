@@ -7,7 +7,7 @@ namespace SQLDump.SqlGeneration
 {
     public static class TableDumpScriptGenerator
     {
-        public static void DumpTable(IDbConnection connection, TableRequest table, DumpRequest dumpRequest, int iFile)
+        public static void DumpTable(IDbConnection connection, TableInfo table, DumpRequest dumpRequest, int iFile)
         {
             EnsureDirectoryExists(dumpRequest.OutputDirectory);
 

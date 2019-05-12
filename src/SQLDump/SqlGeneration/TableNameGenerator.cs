@@ -7,7 +7,7 @@ namespace SQLDump.SqlGeneration
 {
     public static class TableNameGenerator
     {
-        public static IEnumerable<TableRequest> GetTablesToDump(IDbConnection connection, DumpRequest dumpRequest)
+        public static IEnumerable<TableInfo> GetTablesToDump(IDbConnection connection, DumpRequest dumpRequest)
         {
             const string sqlFormat = @"select
 	                t.table_name,
@@ -42,7 +42,7 @@ namespace SQLDump.SqlGeneration
                 sql = string.Format(sqlFormat, $"and CONCAT(t.table_schema, '.', t.table_name) IN ( {tableInfoInPart} )");
             }
 
-            var tableList = new List<TableRequest>();
+            var tableList = new List<TableInfo>();
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = sql;
@@ -61,7 +61,7 @@ namespace SQLDump.SqlGeneration
                                 continue;
                             }
 
-                            tableList.Add(new TableRequest
+                            tableList.Add(new TableInfo
                             {
                                 IdentityColumn = identityColumn,
                                 Name = fullName,
