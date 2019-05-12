@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\DumpRequest.cs" />
-    <Compile Include="Configuration\Options.cs" />
+    <Compile Include="Configuration\DumpConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlGeneration\ConnectionStringBuilder.cs" />
