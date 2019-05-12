@@ -1,11 +1,11 @@
 ﻿{
-  "OutputDirectory": "C:\\Dev\\myproject\\sqldump_output",
+  "OutputDirectory": "..\\sqldump_output",
   "IncludeIdentityInsert" : "true",
   "FileNamePrefix" : "0000_",
   "FileNameSuffix" :  ".ENV.DEV",
-  "ConnectionString" : "Server=.\\SqlExpress;Database=DB_NAME_HERE;Trusted_Connection=True",
+  "ConnectionString" : "Server=.\\SqlExpress;Database=DB_Name;Trusted_Connection=True",
   "TableNames" : [
-      "Table1",
-      "Table2"
+      "Person",
+      "Address"
   ]
 }

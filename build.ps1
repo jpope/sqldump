@@ -53,7 +53,7 @@ function Test {
 }
 
 function Package {
-	exec { & $tools\NuGet.exe pack $src\SQLDump\SQLDump.csproj -Symbols -Prop Configuration=$configuration -OutputDirectory .\package }
+	exec { & $tools\NuGet.exe pack $src\SQLDump\SQLDump.csproj -Symbols -Prop Configuration=$configuration -OutputDirectory .\NugetOutput }
 
    write-host
    write-host "To publish these packages, issue the following command:"

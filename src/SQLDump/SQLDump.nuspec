@@ -9,14 +9,16 @@
 	<license type="expression">MIT</license>
     <projectUrl>https://github.com/jpope/sqldump</projectUrl>
     <iconUrl>https://raw.github.com/jpope/sqldump/master/img/sqldump_256.png</iconUrl>
-    <description>I need to make a description</description>
+    <description>A utility program that can be pointed at a database and list of tables, and create sql scripts that will insert all the data found in the table.</description>
     <copyright>$copyright$</copyright>
     <repository url="https://github.com/jpope/sqldump" />
     <references>
       <reference file="SQLDump.exe" />
     </references>
   </metadata>
-  <!-- <files> -->
+  <files>
+	<file target="lib\net40" src="..\packages\Newtonsoft.Json.12.0.1\lib\net40\**" />
+	<file target="lib\net40" src="..\SQLDump\sample.config.json" />
     <!-- Reference Library -->
 
     <!-- <file target="lib" src="..\SQLDump\bin\Release\SQLDump.exe" /> -->
@@ -30,5 +32,5 @@
     <!-- -->
     <!-- <file target="buildMultiTargeting\" src="..\..\buildMultiTargeting\**" /> -->
 
-  <!-- </files> -->
+  </files>
 </package>
