@@ -5,11 +5,11 @@
     "fileNamePrefix": "0001_",
     "tableRequests": [
       {
-        "name": "dbo.Certificate",
+        "name": "ValuationProcessing.Certificate",
         "includeIdentityInsert": true
       },
       {
-        "name": "dbo.Rider",
+        "name": "ValuationProcessing.Rider",
         "includeIdentityInsert": true
       }
     ]
