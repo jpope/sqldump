@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NDesk.Options;
+using Newtonsoft.Json;
 using SQLDump.Configuration;
 using SQLDump.SqlGeneration;
 
@@ -12,68 +13,32 @@ namespace SQLDump
 {
 	internal static class Program
 	{
-	    private static int Main(string[] args)
+	    private const string DefaultRequestsFile = "sqldump.config.json";
+
+        private static int Main(string[] args)
 	    {
-	        var dumpConfig = new DumpConfig();
+	        try
+	        {
+	            var fileName = DefaultRequestsFile;
+	            if (args != null && args.Length > 0 && !string.IsNullOrWhiteSpace(args[0]))
+	            {
+	                fileName = args[0];
+	            }
 
-            //PrintVersion();
+	            Console.WriteLine($"Reading requests file: '{fileName}'");
+	            var rawContent = File.ReadAllText(fileName);
+	            var dumpConfig = JsonConvert.DeserializeObject<DumpConfig>(rawContent);
 
-//            var optionSet = new OptionSet
-//			{
-//			    {"c|config-path", "read from a JSON configuration file at the given path (default is .\\)",
-//			        x => { options.ConfigPath = x; }},
-                //Support for these has been broken
-//			    { "i|use-integrated-security", "use Integrated Security to connect to server (default)", x => {}},
-//			    {"s|use-sql-server-authentication", "use SQL Server authentication to connect to server", x => options.UseSqlServerAuthenication = x != null},
-//			    {"u|username=", "username for SQL Server authentication", x => options.Username = x},
-//			    {"p|password=", "password for SQL Server authentication", x => options.Password = x},
-//			    {"l|limit=", "limit number of records per table", x => options.Limit = int.Parse(x)},
-//			    {"t|use-transaction", "wrap all insert statements in a transaction", x => options.UseTransaction = x != null},
-//			    {"d|identity-insert", "include statement to enable identity insert and include identity column in output", x => options.IncludeIdentityInsert = x != null},
-//			    {"e|exclude", "supplied tables are excluded, rather than included", x => options.ListIsExclusive = x != null},
-//			};
+	            PerformDump(dumpConfig);
 
-//			IList<string> arguments;
-//
-//			try
-//			{
-//				arguments = optionSet.Parse(args);
-//			}
-//			catch (Exception ex)
-//			{
-//				PrintError(ex.ToString());
-//				return 1;
-//			}
-//
-//			else if (arguments.Count < 2)
-//			{
-//				PrintError("Not enough arguments supplied");
-//				return 1;
-//			}
+            }
+            catch (Exception ex)
+	        {
+	            PrintError(ex.ToString());
+	            return 1;
+	        }
 
-		    dumpConfig.OutputDirectory = "C:\\Dev\\myproject\\sqldump_output";
-            dumpConfig.IncludeIdentityInsert = true;
-	        dumpConfig.FileNameSuffix = ".ENV.DEV";
-	        dumpConfig.FileNamePrefix = DateTime.Now.ToString("yyyy-MM-dd-HHmm.");
-
-	        dumpConfig.ConnectionString = "Server=.\\;Database=DB_NAME_HERE;Trusted_Connection=True";
-	        dumpConfig.TableNames = new List<string>
-		    {
-		        "Table1",
-		        "Table2",
-		    };
-
-            try
-			{
-				PerformDump(dumpConfig);
-			}
-			catch (Exception ex)
-			{
-				PrintError(ex.ToString());
-				return 1;
-			}
-
-			return 0;
+	        return 0;
 		}
 
 		private static void PerformDump(DumpConfig dumpConfig)
@@ -95,9 +60,9 @@ namespace SQLDump
 					else
 						Console.WriteLine();
 
-				    var fileNamePrefix = dumpConfig.FileNamePrefix + iFile.ToString("D3");
+				    var fileNamePrefix = dumpConfig.FileNamePrefix + iFile.ToString("D3") + "_";
 
-				    var filePath = dumpConfig.OutputDirectory + "/" + fileNamePrefix + table.Name + dumpConfig.FileNameSuffix + ".sql";
+				    var filePath = dumpConfig.OutputDirectory + "/" + fileNamePrefix + table.Schema + "_" + table.Name + dumpConfig.FileNameSuffix + ".sql";
                     Console.WriteLine($"Creating file: {filePath}");
 
 				    TableDumpScriptGenerator.DumpTable(connection, dumpConfig, table, filePath);
