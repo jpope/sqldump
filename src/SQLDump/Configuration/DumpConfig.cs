@@ -10,6 +10,7 @@ namespace SQLDump.Configuration
         public bool IncludeIdentityInsert { get; set; }
         public bool TableListIsExclusive { get; set; }
         public List<string> TableNames { get; set; }
+        public TableInfo[] TableInfos { get; set; }
         public string FileNamePrefix { get; set; }
         public string FileNameSuffix { get; set; }
     }

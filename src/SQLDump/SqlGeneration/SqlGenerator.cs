@@ -44,7 +44,7 @@ namespace SQLDump.SqlGeneration
                     {
                         builder.Append(", ");
                     }
-                    var sqlLiteral = ConvertToSqlLiteral(reader.GetFieldType(i), reader.GetValue(i));
+                    var sqlLiteral = ConvertToSqlLiteral(reader.GetFieldType(i), reader.GetValue(i), "");
                     builder.Append(sqlLiteral);
                 }
             }
@@ -52,7 +52,7 @@ namespace SQLDump.SqlGeneration
             return builder.ToString();
         }
 
-        public static string ConvertToSqlLiteral(Type type, object value)
+        public static string ConvertToSqlLiteral(Type type, object value, string alternateFormatter)
         {
             if (value == DBNull.Value)
             {
@@ -61,6 +61,10 @@ namespace SQLDump.SqlGeneration
             else if (type == typeof(string))
             {
                 return "'" + ((string)value).Replace("'", "''") + "'";
+            }
+            else if (alternateFormatter == "DateOnly")
+            {
+                return "'" + ((DateTime)value).ToString("yyyy-MM-dd") + "'";
             }
             else if (type == typeof(DateTime))
             {

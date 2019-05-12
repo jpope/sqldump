@@ -3,9 +3,17 @@
   "IncludeIdentityInsert": "true",
   "FileNamePrefix": "0000_",
   "FileNameSuffix": ".ENV.DEV",
-  "ConnectionString": "Server=.\\SqlExpress;Database=DB_Name;Trusted_Connection=True",
+  "ConnectionString": "Server=.\\SqlExpress;Database=CertificateAdministration_Life;Trusted_Connection=True",
   "TableNames": [
-    "Person",
-    "Address"
+    "Certificate",
+    "Rider"
+  ],
+  "TableInfos": [
+    {
+      "name ": "Certificate" 
+    },
+    {
+      "name ": "Rider"
+    }
   ]
 }
