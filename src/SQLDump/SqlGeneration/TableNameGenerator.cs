@@ -9,22 +9,24 @@ namespace SQLDump.SqlGeneration
     {
         public static IEnumerable<TableInfo> GetTablesToDump(IDbConnection connection, DumpRequest dumpRequest)
         {
-            const string sqlFormat = @"select
-	                t.table_name,
-	                (select top 1
-		                c.column_name
-	                from
-		                information_schema.columns c
-	                where c.table_name = t.table_name
-		                and columnproperty(object_id(c.table_schema+'.'+c.table_name), c.column_name, 'IsIdentity') = 1
-	                ) as identity_column,
-	                table_schema
-                from
-	                information_schema.tables t
-                where t.table_type = 'BASE TABLE'
-                      {0}
-                order by
-	                t.table_name";
+            const string sqlFormat =
+                @"select
+	t.TABLE_NAME,
+	t.TABLE_SCHEMA,
+    (select top 1
+		c.COLUMN_NAME
+	from
+		information_schema.columns c
+	where
+		c.TABLE_NAME = t.TABLE_NAME
+		and columnproperty(object_id(c.TABLE_SCHEMA + '.' + c.TABLE_NAME), c.COLUMN_NAME, 'IsIdentity') = 1
+	) as identity_column
+from
+	information_schema.tables t
+where
+	t.TABLE_TYPE = 'BASE TABLE'{0}
+order by
+	t.TABLE_NAME";
 
             string sql;
             var tableInfoInPart = string.Join(",", dumpRequest.TableRequests.Select(t => $"'{t.Name}'"));
@@ -51,11 +53,12 @@ namespace SQLDump.SqlGeneration
                     while (reader.Read())
                     {
                         var tableName = reader.GetString(0);
-                        var identityColumn = reader.IsDBNull(1) ? null : reader.GetString(1);
-                        var schemaName = reader.GetString(2);
+                        var tableSchema = reader.GetString(1);
+                        var identityColumn = reader.IsDBNull(2) ? null : reader.GetString(2);
+
                         foreach (var t in dumpRequest.TableRequests)
                         {
-                            var fullName = $"{schemaName}.{tableName}";
+                            var fullName = $"{tableSchema}.{tableName}";
                             if (t.Name != fullName)
                             {
                                 continue;
