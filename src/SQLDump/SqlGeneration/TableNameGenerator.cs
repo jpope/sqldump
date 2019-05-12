@@ -7,7 +7,7 @@ namespace SQLDump.SqlGeneration
 {
     public static class TableNameGenerator
     {
-        public static IEnumerable<TableInfo> GetTablesToDump(IDbConnection connection, ICollection<string> tableNames, bool listIsExclusive)
+        public static IEnumerable<TableInfo> GetTablesToDump(IDbConnection connection, DumpConfig dumpConfig)
         {
             const string sqlFormat =
                 @"select
@@ -27,6 +27,9 @@ where
 	t.TABLE_TYPE = 'BASE TABLE'{0}
 order by
 	t.TABLE_NAME";
+
+            var tableNames = dumpConfig.TableNames;
+            var listIsExclusive = dumpConfig.TableListIsExclusive;
 
             string sql;
 

@@ -49,7 +49,7 @@ namespace SQLDump
 			{
 				connection.Open();
 
-				var tablesToDump = TableNameGenerator.GetTablesToDump(connection, dumpConfig.TableNames, dumpConfig.TableListIsExclusive);
+				var tablesToDump = TableNameGenerator.GetTablesToDump(connection, dumpConfig);
 
 			    var iFile = 1;
 				var first = true;
