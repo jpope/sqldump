@@ -2,7 +2,7 @@
 
 . .\build-helpers
 
-$versionPrefix = "0.0.2"
+$versionPrefix = "0.0.3"
 $prerelease = $false
 
 $authors = "Justin Pope"
