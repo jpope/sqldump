@@ -1,11 +1,21 @@
 ﻿{
-  "OutputDirectory": "..\\sqldump_output",
-  "IncludeIdentityInsert" : "true",
-  "FileNamePrefix" : "0000_",
-  "FileNameSuffix" :  ".ENV.DEV",
-  "ConnectionString" : "Server=.\\SqlExpress;Database=DB_Name;Trusted_Connection=True",
-  "TableNames" : [
-      "Person",
-      "Address"
+  "connectionString": "Server=.\\SqlExpress;Database=AddressBook;Trusted_Connection=True",
+  "outputDirectory": "..\\Up",
+  "includeIdentityInsert": "true",
+  "fileNamePrefix": "0000_",
+  "fileNameSuffix": ".ENV.DEV",
+  "tableInfos": [
+    {
+      "name": "Person"
+    },
+    {
+      "name": "Phone",
+      "overrideColumns": [
+        {
+          "columnName": "StartDate",
+          "overrideSerializationType": "Date"
+        }
+      ]
+    }
   ]
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using SQLDump.Configuration;
 
@@ -44,7 +45,13 @@ namespace SQLDump.SqlGeneration
                     {
                         builder.Append(", ");
                     }
-                    var sqlLiteral = ConvertToSqlLiteral(reader.GetFieldType(i), reader.GetValue(i), "");
+
+                    var customColumnFormat = table
+                        .OverrideColumns
+                        .SingleOrDefault(x => x.ColumnName == reader.GetName(i))?
+                        .OverrideSerializationType;
+
+                    var sqlLiteral = ConvertToSqlLiteral(reader.GetFieldType(i), reader.GetValue(i), customColumnFormat);
                     builder.Append(sqlLiteral);
                 }
             }
@@ -62,7 +69,7 @@ namespace SQLDump.SqlGeneration
             {
                 return "'" + ((string)value).Replace("'", "''") + "'";
             }
-            else if (alternateFormatter == "DateOnly")
+            else if (alternateFormatter == "Date" || alternateFormatter == "Date?")
             {
                 return "'" + ((DateTime)value).ToString("yyyy-MM-dd") + "'";
             }

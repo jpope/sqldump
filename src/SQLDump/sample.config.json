@@ -1,19 +1,21 @@
 ﻿{
-  "OutputDirectory": "..\\sqldump_output",
-  "IncludeIdentityInsert": "true",
-  "FileNamePrefix": "0000_",
-  "FileNameSuffix": ".ENV.DEV",
-  "ConnectionString": "Server=.\\SqlExpress;Database=CertificateAdministration_Life;Trusted_Connection=True",
-  "TableNames": [
-    "Certificate",
-    "Rider"
-  ],
-  "TableInfos": [
+  "connectionString": "Server=.\\SqlExpress;Database=AddressBook;Trusted_Connection=True",
+  "outputDirectory": "..\\Up",
+  "includeIdentityInsert": "true",
+  "fileNamePrefix": "0000_",
+  "fileNameSuffix": ".ENV.DEV",
+  "tableInfos": [
     {
-      "name ": "Certificate" 
+      "name": "Person"
     },
     {
-      "name ": "Rider"
+      "name": "Phone",
+      "overrideColumns": [
+        {
+          "columnName": "StartDate",
+          "overrideSerializationType": "Date"
+        }
+      ] 
     }
   ]
 }

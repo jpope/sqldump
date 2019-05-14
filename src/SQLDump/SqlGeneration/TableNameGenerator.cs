@@ -28,34 +28,31 @@ where
 order by
 	t.TABLE_NAME";
 
-            var tableNames = dumpConfig.TableNames;
+            var tableNames = dumpConfig.TableInfos.Select(x => x.Name).ToList();
             var listIsExclusive = dumpConfig.TableListIsExclusive;
 
-            string sql;
-
-            if (tableNames == null)
-            {
-                tableNames = new List<string>();
-            }
+            string sqlTableNames;
 
             if (tableNames.Count == 0)
             {
-                sql = string.Format(sqlFormat, string.Empty);
+                sqlTableNames = string.Format(sqlFormat, string.Empty);
             }
             else if (listIsExclusive)
             {
-                sql = string.Format(sqlFormat, "\n\tand t.table_name not in ('" + string.Join("', '", tableNames) + "')");
+                sqlTableNames = string.Format(sqlFormat,
+                    "\n\tand t.table_name not in ('" + string.Join("', '", tableNames) + "')");
             }
             else
             {
-                sql = string.Format(sqlFormat, "\n\tand t.table_name in ('" + string.Join("', '", tableNames) + "')");
+                sqlTableNames = string.Format(sqlFormat,
+                    "\n\tand t.table_name in ('" + string.Join("', '", tableNames) + "')");
             }
 
             var tableList = new List<TableInfo>();
 
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = sql;
+                command.CommandText = sqlTableNames;
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -65,15 +62,27 @@ order by
                         var tableSchema = reader.GetString(1);
                         var identityColumn = reader.IsDBNull(2) ? null : reader.GetString(2);
 
-                        tableList.Add(new TableInfo
+                        var passedInTable = dumpConfig
+                            .TableInfos
+                            .SingleOrDefault(x => x.Name == tableName);
+
+                        var tableInfo = new TableInfo
                         {
                             Name = tableName,
                             Schema = tableSchema,
                             IdentityColumn = identityColumn
-                        });
+                        };
+
+                        if (passedInTable != null && passedInTable.OverrideColumns.Any())
+                        {
+                            tableInfo.OverrideColumns = passedInTable.OverrideColumns;
+                        }
+
+                        tableList.Add(tableInfo);
                     }
                 }
             }
+
             var sortedTableList = new List<TableInfo>();
 
             if (tableNames.Count > 1)
@@ -90,8 +99,45 @@ order by
                 sortedTableList = tableList;
             }
 
+            foreach (var tableInfo in sortedTableList)
+            {
+                AddColumnFormatInfo(connection, tableInfo);
+            }
+
             return sortedTableList;
         }
 
+        private static void AddColumnFormatInfo(IDbConnection connection, TableInfo tableInfo)
+        {
+            var sqlColumnInfo =
+                $@"SELECT COLUMN_NAME, 'Date' + CASE WHEN IS_NULLABLE = 'YES' THEN '?' ELSE '' END AS 'ColumnType'
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE DATA_TYPE = 'date' AND TABLE_SCHEMA = '{tableInfo.Schema}' AND TABLE_NAME = '{tableInfo.Name}'";
+
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = sqlColumnInfo;
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var columnName = reader.GetString(0);
+                        var columnType = reader.GetString(1);
+
+                        if (tableInfo.OverrideColumns.Any(x => x.ColumnName == columnName))
+                            continue;
+
+                        var columnInfo = new ColumnInfo
+                        {
+                            ColumnName = columnName,
+                            OverrideSerializationType = columnType
+                        };
+
+                        tableInfo.OverrideColumns.Add(columnInfo);
+                    }
+                }
+            }
+        }
     }
 }
