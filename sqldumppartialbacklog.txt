@@ -1,0 +1,4 @@
+SqlDump backlog:
+
+* When not using identity column, and inserting every column, don't list column names in the insert
+* Don't strongly depend on Newtonsoft.JSON version: Error	NU1107	Version conflict detected for Newtonsoft.Json. Install/reference Newtonsoft.Json 12.0.1 directly to project XXXX to resolve this issue. 
