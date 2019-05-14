@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using NDesk.Options;
 using Newtonsoft.Json;
 using SQLDump.Configuration;
 using SQLDump.SqlGeneration;
