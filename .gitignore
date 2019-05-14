@@ -1,6 +1,6 @@
 # obj/
 # /build/
-/package/
+/NugetOutput/
 # /packages/
 # /src/**/.vs/
 # /src/packages/
