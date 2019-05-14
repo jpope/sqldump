@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using NDesk.Options;
 using Newtonsoft.Json;
 using SQLDump.Configuration;
 using SQLDump.SqlGeneration;
@@ -49,7 +48,7 @@ namespace SQLDump
 			{
 				connection.Open();
 
-				var tablesToDump = TableNameGenerator.GetTablesToDump(connection, dumpConfig.TableNames, dumpConfig.TableListIsExclusive);
+				var tablesToDump = TableNameGenerator.GetTablesToDump(connection, dumpConfig);
 
 			    var iFile = 1;
 				var first = true;
