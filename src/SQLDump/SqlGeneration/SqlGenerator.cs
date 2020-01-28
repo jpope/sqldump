@@ -101,14 +101,12 @@ namespace SQLDump.SqlGeneration
 
         private static string GetHexString(IEnumerable<byte> value)
         {
-            var sb = new StringBuilder("'0x");
+            var sb = new StringBuilder("0x");
 
             foreach (var @byte in value)
             {
                 sb.AppendFormat("{0:x2}", @byte);
             }
-
-            sb.Append("'");
 
             return sb.ToString();
         }
